@@ -18,6 +18,8 @@
 	6	SM			1		checksum of lower byte of (from Start to  datan )
 """
 from machine import Pin, UART
+from setting import *
+from utility import *
 
 class Sound_Player():
     def __init__(self, tx, rx):
