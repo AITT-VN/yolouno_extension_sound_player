@@ -31,6 +31,7 @@ class Sound_Player():
     #to get HighByte,LowByte
     def split(self, num):
         return num >> 8, num & 0xFF
+    
     #to get SM,
     def get_SM(self, b):
         message_length=len(b)
@@ -42,7 +43,7 @@ class Sound_Player():
         #和检验 ：为之前所有字节之和的低 8 位,即起始码到数据相加后取低 8 位
         SM_Code=(0xAA  + bit_sum ) & 0xFF
         #print("SM_Code:",SM_Code)
-     #验证：07 02 00 01，bit_sum=
+        #验证：07 02 00 01，bit_sum=
         return SM_Code
 
 
@@ -53,6 +54,7 @@ class Sound_Player():
         command.append(0x00)##[2]
         command.append(0x00)##[3]
         return command
+    
     #下一曲
     def play_next(self):
         command=bytearray()
@@ -61,6 +63,7 @@ class Sound_Player():
         command[3]=0xB0
         #return command
         self._uart.write(command)
+    
     #上一曲
     def play_previous(self):
         command=bytearray()
@@ -120,7 +123,6 @@ class Sound_Player():
         command[3]=0xAC
         self._uart.write(command)
     
-
     def pause(self):
         command=bytearray()
         command=self.command_base()
@@ -146,6 +148,7 @@ class Sound_Player():
         command[3]=0x02
         command.append(0xB8) 
         self._uart.write(command)
+    
     #指令：AA 16 03 盘符 曲目高 曲目低 SM
     #返回：无
     #盘符定义: 切换盘符后处于停止状态
