@@ -1,0 +1,13 @@
+{
+    "name": "Sound Player",
+    "description": "Mục mở rộng của Yolo UNO cho module Sound Player",
+    "libs": [
+        "yolouno_sound_player.py"
+    ],
+    "blocks": [
+        "definition.js"
+    ],
+    "toolbox": "toolbox.xml",
+    "languages": {},
+    "poster": "poster.png"
+}
