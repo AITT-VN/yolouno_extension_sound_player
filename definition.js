@@ -181,7 +181,7 @@ Blockly.Python['yolouno_sound_start'] = function (block) {
   // TODO: Assemble Python into code variable.
   var tx = block.getFieldValue('TX');
   var rx = block.getFieldValue('RX');
-  Blockly.Python.definitions_['import_sound_player'] = 'from yolouno_sound_player import *';
+  Blockly.Python.definitions_['import_sound_player'] = 'from sound_player import *';
   Blockly.Python.definitions_['init_sound_player'] = 'sound = Sound_Player(tx=' + tx + '_PIN, rx=' + rx + '_PIN)';
   var code = '';
   return code;
