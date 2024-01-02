@@ -27,23 +27,19 @@ class Sound_Player():
         self.stop()
         self.set_volume(20)
         
-    #位运算，返回高八位，低8位
     #to get HighByte,LowByte
     def split(self, num):
         return num >> 8, num & 0xFF
     
-    #to get SM,
+    #to get SM
     def get_SM(self, b):
         message_length=len(b)
         bit_sum=0X00
-        #按位与运算
         for i in range((message_length)):
             bit_sum += b[i]
         #print("bit_sum:",bit_sum)
-        #和检验 ：为之前所有字节之和的低 8 位,即起始码到数据相加后取低 8 位
         SM_Code=(0xAA  + bit_sum ) & 0xFF
         #print("SM_Code:",SM_Code)
-        #验证：07 02 00 01，bit_sum=
         return SM_Code
 
 
@@ -55,7 +51,6 @@ class Sound_Player():
         command.append(0x00)##[3]
         return command
     
-    #下一曲
     def play_next(self):
         command=bytearray()
         command=self.command_base()
@@ -64,7 +59,6 @@ class Sound_Player():
         #return command
         self._uart.write(command)
     
-    #上一曲
     def play_previous(self):
         command=bytearray()
         command=self.command_base()
@@ -73,7 +67,6 @@ class Sound_Player():
         #return command
         self._uart.write(command)
 
-    #曲目id从1-65536，拆分成高低,否则应该append	
     #track_id ,1-65536
     def play_track(self, track_id):
         command=bytearray()
@@ -137,8 +130,6 @@ class Sound_Player():
         command[3]=0xAE
         self._uart.write(command)
 
-    #切换为flash卡
-    #AA 0B 01 02 B8 切换到 FLASH 卡，切换后处于停止状态
     #use flash to play ,it's by default
     def use_flash(self):
         command=bytearray()
@@ -149,19 +140,13 @@ class Sound_Player():
         command.append(0xB8) 
         self._uart.write(command)
     
-    #指令：AA 16 03 盘符 曲目高 曲目低 SM
-    #返回：无
-    #盘符定义: 切换盘符后处于停止状态
-    #USB:00 SD:01 FLASH:02 NO_DEVICE：FF
-    #例如：AA 16 03 00 00 09 CC 插播 U 盘里的第 9 首
-    #说明：插播结束后返回插播点继续播放
     def insert_play(self, track_id):
         command=bytearray()
         command=self.command_base()
         command[1]=0x16
         command[2]=0x03
         command[3]=0x02
-        HighByte, LowByte = split(track_id)
+        HighByte, LowByte = self.split(track_id)
         command.append(HighByte)
         command.append(LowByte)
         b=[command[1],command[2],command[3],command[4],command[5]]
